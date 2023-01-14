@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from backend.models import User, Contact, ConfirmEmailToken
+from backend.models import User, ConfirmEmailToken
 
 # admin.site.register(User)
 
@@ -25,9 +25,9 @@ class CustomUserAdmin(UserAdmin):
 
 
 
-@admin.register(Contact)
-class ContactAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(Contact)
+# class ContactAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(ConfirmEmailToken)
