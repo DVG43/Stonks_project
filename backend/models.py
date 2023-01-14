@@ -20,11 +20,6 @@ STATE_CHOICES = (
     ('canceled', 'Отменен'),
 )
 
-USER_TYPE_CHOICES = (
-    ('shop', 'Магазин'),
-    ('buyer', 'Покупатель'),
-
-)
 
 
 class BaseModel(models.Model):
@@ -36,9 +31,10 @@ class BaseModel(models.Model):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
-    _name = models.CharField(_('first name'), max_length=30, blank=True)
+    name = models.CharField(_('name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     is_active = models.BooleanField(_('active'), default=True)
+    is_staff = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     objects = UserManager()
@@ -48,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
     def __str__(self):
-        return f'{self._name}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = _('user')
@@ -59,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         Returns the  name for the user.
         '''
-        return self._name
+        return self.name
 
 
 
