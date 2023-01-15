@@ -10,26 +10,27 @@ from django_rest_passwordreset.tokens import get_token_generator
 
 from .managers import UserManager
 
-STATE_CHOICES = (
-    ('basket', 'Статус корзины'),
-    ('new', 'Новый'),
-    ('confirmed', 'Подтвержден'),
-    ('assembled', 'Собран'),
-    ('sent', 'Отправлен'),
-    ('delivered', 'Доставлен'),
-    ('canceled', 'Отменен'),
-)
+# STATE_CHOICES = (
+#     ('basket', 'Статус корзины'),
+#     ('new', 'Новый'),
+#     ('confirmed', 'Подтвержден'),
+#     ('assembled', 'Собран'),
+#     ('sent', 'Отправлен'),
+#     ('delivered', 'Доставлен'),
+#     ('canceled', 'Отменен'),
+# )
 
 
 
-class BaseModel(models.Model):
-    objects = models.Manager()
-
-    class Meta:
-        abstract = True
+# class BaseModel(models.Model):
+#     objects = models.Manager()
+#
+#     class Meta:
+#         abstract = True
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+
     email = models.EmailField(_('email address'), unique=True)
     name = models.CharField(_('name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
@@ -40,8 +41,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return f'{self.name}'
