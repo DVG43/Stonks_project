@@ -64,8 +64,8 @@ class Profile(BaseModel):
                              on_delete=models.CASCADE)
 
     desire_update = models.BooleanField(default=False)
-    invitation_friend = models.CharField(default=False)
-    paid_subscription = models.CharField(default=False)
+    invitation_friend = models.BooleanField(default=False)
+    paid_subscription = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     class Meta:
