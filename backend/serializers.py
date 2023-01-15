@@ -1,17 +1,9 @@
 from rest_framework import serializers
 
 # из списка выкинуты User,
-from backend.models import User
+from backend.models import User, Profile
 
 
-#class ContactSerializer(serializers.ModelSerializer):
-    # class Meta:
-    #     model = Contact
-    #     fields = ('id', 'city', 'street', 'house', 'structure', 'building', 'apartment', 'user', 'phone')
-    #     read_only_fields = ('id',)
-    #     extra_kwargs = {
-    #         'user': {'write_only': True}
-    #     }
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,3 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'name',  'email',)
         read_only_fields = ('id',)
 
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('id', 'desire_update', 'invitation_friend', 'paid_subscription',)
+        read_only_fields = ('id',)
+        extra_kwargs = {
+            'avatar': {'write_only': True}
+        }
