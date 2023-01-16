@@ -21,7 +21,8 @@ from rest_framework.throttling import AnonRateThrottle
 
 from backend.models import  ConfirmEmailToken
 from backend.serializers import UserSerializer
-
+from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.shortcuts import render, redirect
 
 from backend.task import new_user_registered, new_order
 
@@ -225,3 +226,17 @@ class LoginAccount(APIView):
 #
 #         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 #
+def start(request):
+    return render(request, 'backend/start_page.html')
+
+def contact(request):
+    return HttpResponse("Обратная связь")
+
+def login(request):
+    return HttpResponse("Авторизация")
+
+
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+
+
