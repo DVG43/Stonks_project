@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<header>
+		<div class="container">
+			<div class="row">
+				<a href="#" class="header-logo">
+					<img src="./images/Logo.png" alt="Логотип Stonks">
+				</a>
+				<h1 class="subject">Настройки профиля</h1>
+				<div class="cabinet">
+					<div class="cabinet__user-name">
+						<a href="./profile.html">Мой профиль</a></div>
+					<div class="cabinet__user-icon"></div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main>
+		<nav class="main-nav">
+			<ul class="main-nav__list">
+				<li class="main-nav__item"><a href="./index.html" class="main-nav__link">Анализ инструментов</a></li>
+				<li class="main-nav__item"><a href="./portfolio.html" class="main-nav__link">Анализ портфеля</a></li>
+				<li class="main-nav__item"><a href="#" class="main-nav__link">Тестер стратегий</a></li>
+				<li class="main-nav__item"><a href="#" class="main-nav__link">Сообщество</a></li>
+				<li class="main-nav__item"><a href="./profile.html" class="main-nav__link">Мой профиль</a></li>
+			</ul>
+		</nav>
+		<div class="section">
+			<div class="profile-settings">
+				<ul class="profile-menu__list">
+					<li class="profile-menu__item"><a href="">Аккаунт</a></li>
+					<li class="profile-menu__item"><a href="">Управление подпиской</a></li>
+					<li class="profile-menu__item"><a href="">Пригласи друга</a></li>
+				</ul>
+				<div class="profile-settings__box">
+					<ul class="profile-submenu__list">
+						<li class="profile-submenu__item"><a href="">Общее</a></li>
+						<li class="profile-submenu__item"><a href="./profile-push.html">Уведомления</a></li>
+						<li class="profile-submenu__item"><a href="">Удаление аккаунта</a></li>
+					</ul>
+					<div class="profile-components">
+						<form class="sign-up__form">
+							<div class="sign-up__column">
+								<label class="sign-up__label" for="email">Email</label>
+								<input id="email" class="sign-up__field sign-up__field_email" type="email" name="email"
+									required>
+							</div>
+							<div class="sign-up__column">
+								<label class="sign-up__label" for="username">Имя</label>
+								<input id="username" class="sign-up__field sign-up__field_username" type="text" name="username"
+									required>
+							</div>
+						</form>
+						<div class="profile-components__avatar">Фото
+							<div class="upload-avatar"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+</html>

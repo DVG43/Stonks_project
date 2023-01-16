@@ -21,7 +21,6 @@ from .managers import UserManager
 # )
 
 
-
 class BaseModel(models.Model):
     objects = models.Manager()
 
