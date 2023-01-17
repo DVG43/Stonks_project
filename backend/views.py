@@ -1,157 +1,41 @@
-#import os
-# import pathlib
-# from pathlib import Path
-from distutils.util import strtobool
+# #import os
+# # import pathlib
+# # from pathlib import Path
+# from distutils.util import strtobool
+#
+# from django.contrib.auth import authenticate
+# from django.contrib.auth.password_validation import validate_password
+# from django.core.exceptions import ValidationError
+# from django.core.validators import URLValidator
+# from django.db import IntegrityError
+# from django.db.models import Q, Sum, F
+# from django.http import JsonResponse
+# from django.views.generic import CreateView
+# from requests import get
+# from rest_framework.authtoken.models import Token
+# from rest_framework.generics import ListAPIView
+# from rest_framework.response import Response
+# from rest_framework.views import APIView
+# from json import loads as load_json
+# from yaml import load as load_yaml, Loader
+# from rest_framework.throttling import AnonRateThrottle
+#
+# from backend.models import  ConfirmEmailToken
+# from backend.serializers import UserSerializer
+# from django.http import HttpResponse, HttpResponseNotFound, Http404
+# from django.shortcuts import render, redirect
 
-from django.contrib.auth import authenticate
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-from django.core.validators import URLValidator
-from django.db import IntegrityError
-from django.db.models import Q, Sum, F
-from django.http import JsonResponse
-from requests import get
-from rest_framework.authtoken.models import Token
-from rest_framework.generics import ListAPIView
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from json import loads as load_json
-from yaml import load as load_yaml, Loader
-from rest_framework.throttling import AnonRateThrottle
-
-from backend.models import  ConfirmEmailToken
-from backend.serializers import UserSerializer
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
+from .mixins import LoginRequiredMixin
 
-from backend.task import new_user_registered, new_order
-
-
-class RegisterAccount(APIView):
-    """
-    Для регистрации покупателей
-    """
-    # Регистрация методом POST
-    def post(self, request, *args, **kwargs):
-
-        # проверяем обязательные аргументы
-        if {'name', 'email', 'password', }.issubset(request.data):
-            errors = {}
-
-            # проверяем пароль на сложность
-
-            try:
-                validate_password(request.data['password'])
-            except Exception as password_error:
-                error_array = []
-                # noinspection PyTypeChecker
-                for item in password_error:
-                    error_array.append(item)
-                return JsonResponse({'Status': False, 'Errors': {'password': error_array}})
-            else:
-                # проверяем данные для уникальности имени пользователя
-                request.data._mutable = True
-                request.data.update({})
-                user_serializer = UserSerializer(data=request.data)
-                if user_serializer.is_valid():
-                    # сохраняем пользователя
-                    user = user_serializer.save()
-                    user.set_password(request.data['password'])
-                    user.save()
-                    new_user_registered.send(sender=self.__class__, user_id=user.id)
-                    return JsonResponse({'Status': True})
-                else:
-                    return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
-
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
-
-
-class ConfirmAccount(APIView):
-    """
-    Класс для подтверждения почтового адреса
-    """
-    # Регистрация методом POST
-    throttle_classes = [AnonRateThrottle]
-
-    def post(self, request, *args, **kwargs):
-
-        # проверяем обязательные аргументы
-        if {'email', 'token'}.issubset(request.data):
-
-            token = ConfirmEmailToken.objects.filter(user__email=request.data['email'],
-                                                     key=request.data['token']).first()
-            if token:
-                token.user.is_active = True
-                token.user.save()
-                token.delete()
-                return JsonResponse({'Status': True})
-            else:
-                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'})
-
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
-
-
-class AccountDetails(APIView):
-    """
-    Класс для работы данными пользователя
-    """
-    throttle_classes = [AnonRateThrottle]
-    # получить данные
-    def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
-
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
-
-    # Редактирование методом POST
-    def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
-        # проверяем обязательные аргументы
-
-        if 'password' in request.data:
-            errors = {}
-            # проверяем пароль на сложность
-            try:
-                validate_password(request.data['password'])
-            except Exception as password_error:
-                error_array = []
-                # noinspection PyTypeChecker
-                for item in password_error:
-                    error_array.append(item)
-                return JsonResponse({'Status': False, 'Errors': {'password': error_array}})
-            else:
-                request.user.set_password(request.data['password'])
-
-        # проверяем остальные данные
-        user_serializer = UserSerializer(request.user, data=request.data, partial=True)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            return JsonResponse({'Status': True})
-        else:
-            return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
-
-
-class LoginAccount(APIView):
-    """
-    Класс для авторизации пользователей
-    """
-    # Авторизация методом POST
-    def post(self, request, *args, **kwargs):
-
-        if {'email', 'password'}.issubset(request.data):
-            user = authenticate(request, username=request.data['email'], password=request.data['password'])
-
-            if user is not None:
-                if user.is_active:
-                    token, _ = Token.objects.get_or_create(user=user)
-
-                    return JsonResponse({'Status': True, 'Token': token.key})
-
-            return JsonResponse({'Status': False, 'Errors': 'Не удалось авторизовать'})
-
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+from .forms import *
+from .models import *
+from .utils import *
 
 
 # class ContactView(APIView):
@@ -226,17 +110,34 @@ class LoginAccount(APIView):
 #
 #         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 #
+
+
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'backend/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Регистрация")
+        return dict(list(context.items()) + list(c_def.items()))
+
+
 def start(request):
     return render(request, 'backend/start_page.html')
 
-def contact(request):
-    return HttpResponse("Обратная связь")
+
+def data_profile(request):
+    return HttpResponse("Данные профиля")
+
 
 def login(request):
     return HttpResponse("Авторизация")
 
 
+def unlogin(request):
+    return HttpResponse("Вы вышли из авторизации")
+
+
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
-
-
