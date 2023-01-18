@@ -31,7 +31,7 @@ class BaseModel(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_('email address'), unique=True)
-    name = models.CharField(_('name'), max_length=30, blank=True)
+    username = models.CharField(_('name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     is_active = models.BooleanField(_('active'), default=True)
     is_staff = models.BooleanField(default=False)
@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.username}'
 
     class Meta:
         verbose_name = _('user')
@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         Returns the  name for the user.
         '''
-        return self.name
+        return self.username
 
 
 class Profile(BaseModel):

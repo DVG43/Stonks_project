@@ -37,6 +37,11 @@ from .forms import *
 from .models import *
 from .utils import *
 
+# menu = [{'title': "О сайте", 'url_name': 'about'},
+#         {'title': "Добавить статью", 'url_name': 'add_page'},
+#         {'title': "Обратная связь", 'url_name': 'contact'},
+#         ]
+
 
 # class ContactView(APIView):
 #     """
@@ -112,15 +117,25 @@ from .utils import *
 #
 
 
-class RegisterUser(DataMixin, CreateView):
+class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'backend/register.html'
     success_url = reverse_lazy('login')
+    context = {
+        'title': 'Регистрация'
+            }
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['title'] = 'Регистрация'
+    #      return context
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Регистрация")
-        return dict(list(context.items()) + list(c_def.items()))
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     c_def = self.get_user_context(title="Регистрация")
+    #     return dict(list(context.items()) + list(c_def.items()))
+
+
+
 
 
 def start(request):
@@ -135,7 +150,7 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def unlogin(request):
+def logout(request):
     return HttpResponse("Вы вышли из авторизации")
 
 

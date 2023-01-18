@@ -1,17 +1,54 @@
-{% extends 'backend/start_page.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
 
-{% block content %}
-<h1>{{title}}</h1>
+<head>
+	<title>{{title}}</title>
+	<meta charset="UTF-8">
+	<link type="text/css" href="{% static 'profile/css/styles.css' %}" rel="stylesheet" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
 
-<form method="post">
-    {% csrf_token %}
+<body>
+	<header>
+		<div class="container">
+			<div class="row">
+				<a href="{% static 'profile' %}" class="header-logo">
+					<img src="./images/Logo.png" alt="Логотип Stonks">
+				</a>
+				<h1 class="subject">Главная страница</h1>
+				<div class="cabinet">
+					<div class="cabinet__user-name">
+						<a href="./profile.html">Меню</a></div>					  
+					<div class="cabinet__user-icon"></div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main>
+		<nav class="main-nav">
+			<ul class="main-nav__list">
+				<li class="main-nav__item"><a href="./index.html" class="main-nav__link">О проекте</a></li>
+				<li class="main-nav__item"><a href="./strategy.html" class="main-nav__link">О стратегиях</a></li>
+                                
+				<form method="post">
+					{% csrf_token %}
 
-{% for f in form %}
-<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-<div class="form-error">{{ f.errors }}</div>
-{% endfor %}
+					{% for f in form %}
+					<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+					<div class="form-error">{{ f.errors }}</div>
+					{% endfor %}
 
-    <button type="submit">Регистрация</button>
-</form>
+					<button type="submit">Регистрация</button>
+				</form>
+			</ul>
+		</nav>
+		<div class="section">
+		</div>
+	</main>
+</body>
+</html>
 
-{% endblock %}
+

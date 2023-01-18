@@ -17,11 +17,10 @@
 				<a href="{% static 'profile' %}" class="header-logo">
 					<img src="./images/Logo.png" alt="Логотип Stonks">
 				</a>
-				<h1 class="subject">Сообщество</h1>
+				<h1 class="subject">Главная страница</h1>
 				<div class="cabinet">
 					<div class="cabinet__user-name">
-						<a href="./profile.html">Мой профиль</a></div>
-					    <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+						<a href="./profile.html">Меню</a></div>					  
 					<div class="cabinet__user-icon"></div>
 				</div>
 			</div>
@@ -30,13 +29,13 @@
 	<main>
 		<nav class="main-nav">
 			<ul class="main-nav__list">
-				<li class="main-nav__item"><a href="./index.html" class="main-nav__link">Анализ инструментов</a></li>
-				<li class="main-nav__item"><a href="./portfolio.html" class="main-nav__link">Анализ портфеля</a></li>
-				<li class="main-nav__item"><a href="./strategy.html" class="main-nav__link">Тестер стратегий</a></li>
-				<li class="main-nav__item"><a href="./community.html" class="main-nav__link">Сообщество</a></li>
-				<li class="main-nav__item"><a href="./profile.html" class="main-nav__link">Мой профиль</a></li>
+				<li class="main-nav__item"><a href="./index.html" class="main-nav__link">О проекте</a></li>
+				<li class="main-nav__item"><a href="./strategy.html" class="main-nav__link">О стратегиях</a></li>
+                <div class="clear"></div>
+				<li class="main-nav__item"><a href="register/" class="main-nav__link"> Регистрация</a> | <a href="login/" class="main-nav__link"> Войти</a></li>
 			</ul>
 		</nav>
+
 		<div class="section">
 		</div>
 	</main>
