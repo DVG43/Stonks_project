@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-
+	<title>{{title}}</title>
 	<meta charset="UTF-8">
 	<link type="text/css" href="{% static 'profile/css/styles.css' %}" rel="stylesheet" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +21,7 @@
 				<h1 class="subject">Главная страница</h1>
 				<div class="cabinet">
 					<div class="cabinet__user-name">
-						<a href="./profile.html">Меню</a></div>					  
+						<a href="./profile.html">Меню</a></div>
 					<div class="cabinet__user-icon"></div>
 				</div>
 			</div>
@@ -32,14 +32,21 @@
 			<ul class="main-nav__list">
 				<li class="main-nav__item"><a href="./index.html" class="main-nav__link">О проекте</a></li>
 				<li class="main-nav__item"><a href="./strategy.html" class="main-nav__link">О стратегиях</a></li>
-                <div class="clear"></div>
-				<li class="main-nav__item"><a href="register/" class="main-nav__link"> Регистрация</a> | <a href="login/" class="main-nav__link"> Войти</a></li>
+
+				<form method="post">
+					{% csrf_token %}
+					<div class="form-error">{{ form.non_field_errors }}</div>
+					{% for f in form %}
+					<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+					<div class="form-error">{{ f.errors }}</div>
+					{% endfor %}
+
+					<button type="submit">Войти</button>
+				</form>
 			</ul>
 		</nav>
-
 		<div class="section">
 		</div>
 	</main>
 </body>
 </html>
-

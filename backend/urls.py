@@ -3,14 +3,14 @@
 from django.urls import path
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 
-from backend.views import login, logout, data_profile, start, RegisterUser
+from backend.views import data_profile, start, RegisterUser, LoginUser, logout_user
 
 
 app_name = 'backend'
 urlpatterns = [
      path('', start, name='home'),
-     path('login/', login, name='login'),
-     path('logout/', logout, name='logout'),
+     path('login/', LoginUser.as_view(), name='login'),
+     path('logout/', logout_user, name='logout'),
      path('register/', RegisterUser.as_view(), name='register'),
      path('profile/', data_profile, name='profile'),
 ]
