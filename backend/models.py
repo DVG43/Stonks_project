@@ -7,7 +7,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
-
+from django.urls import reverse
 from .managers import UserManager
 
 # STATE_CHOICES = (
@@ -58,14 +58,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(BaseModel):
-    user = models.ForeignKey(User, verbose_name='Пользователь',
-                             related_name='contacts', blank=True,
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='Имя пользователя',
+                             blank=True, on_delete=models.CASCADE)
 
     desire_update = models.BooleanField(default=False)
     invitation_friend = models.BooleanField(default=False)
     paid_subscription = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'profile_slug': self.slug})
 
     class Meta:
         verbose_name = "Данные пользователя"

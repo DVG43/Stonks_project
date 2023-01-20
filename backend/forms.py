@@ -34,6 +34,17 @@ class LoginUserForm(AuthenticationForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
 
 
+class AddProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('desire_update', 'invitation_friend', 'paid_subscription', avatar)
+        widgets = {
+            'desire_update': forms.CheckboxInput(attrs={'class': 'form-input'}),
+            'invitation_friend': forms.CheckboxInput(attrs={'class': 'form-input'}),
+            'paid_subscription': forms.CheckboxInput(attrs={'class': 'form-input'}),
+            'avatar': forms.ClearableFileInput(),
+        }
+
 
 class CustomProfileCreationForm(UserCreationForm):
     class Meta(UserCreationForm):

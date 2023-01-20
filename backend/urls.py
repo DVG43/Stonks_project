@@ -3,7 +3,7 @@
 from django.urls import path
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 
-from backend.views import data_profile, start, RegisterUser, LoginUser, logout_user
+from backend.views import start, RegisterUser, LoginUser, logout_user, AddProfile, ShowProfile
 
 
 app_name = 'backend'
@@ -12,7 +12,8 @@ urlpatterns = [
      path('login/', LoginUser.as_view(), name='login'),
      path('logout/', logout_user, name='logout'),
      path('register/', RegisterUser.as_view(), name='register'),
-     path('profile/', data_profile, name='profile'),
+     path('profile/<int:prof_id>/', ShowProfile.as_view(), name='profile'),
+     path('new_profile/', AddProfile.as_view(), name='new_profile'),
 ]
 
      # path('user/password_reset/', reset_password_request_token, name='password-reset'),

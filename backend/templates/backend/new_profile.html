@@ -46,30 +46,33 @@
 				<div class="profile-settings__box">
 					<ul class="profile-submenu__list">
 						<li class="profile-submenu__item"><a href="">Общее</a></li>
-						<li class="profile-submenu__item"><a href="./profile-push.html">Уведомления</a></li>
+						<li class="profile-submenu__item"><a href="">Уведомления</a></li>
 						<li class="profile-submenu__item"><a href="">Удаление аккаунта</a></li>
 					</ul>
 					<div class="profile-components">
-						<form class="sign-up__form">
-							<div class="sign-up__column">
-								<label class="sign-up__label" for="email">Email</label>
-								<input id="email" class="sign-up__field sign-up__field_email" type="email" name="email"
-									required>
-							</div>
-							<div class="sign-up__column">
-								<label class="sign-up__label" for="username">Имя</label>
-								<input id="username" class="sign-up__field sign-up__field_username" type="text" name="username"
-									required>
-							</div>
-						</form>
-						<div class="profile-components__avatar">Фото
-							<div class="upload-avatar"></div>
+						<div class="form-group">
+	                                        <form action="{% url 'add_page' %}" method="post" enctype="multipart/form-data">
+                                                       {% csrf_token %}
+
+                                                        <div class="form-error">{{ form.non_field_errors }}</div>
+
+                                                 {% for f in form %}
+                                                 <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+                                                 <div class="form-error">{{ f.errors }}</div>
+                                                 {% endfor %}
+
+                                                         <button type="submit">Добавить</button>
+                                                  </form>
+						</div>
+						<div class="form-group">
+							<button class="button">Сохранить</button>
 						</div>
 					</div>
 				</div>
+
+
 			</div>
 		</div>
 	</main>
 </body>
 </html>
-

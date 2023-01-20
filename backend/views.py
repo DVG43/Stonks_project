@@ -127,7 +127,7 @@ class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'backend/register.html'
     success_url = reverse_lazy('login')
-    context = {
+    extra_context = {
         'title': 'Регистрация'
             }
 
@@ -151,12 +151,12 @@ class RegisterUser(CreateView):
 class LoginUser(LoginView):
     form_class = LoginUserForm
     template_name = 'backend/login.html'
-    context = {
+    extra_context= {
         'title': 'Вход'
               }
 
     def get_success_url(self):
-        return reverse_lazy('profile')
+        return reverse_lazy('new_profile')
 
 
 def logout_user(request):
@@ -164,8 +164,33 @@ def logout_user(request):
     return redirect('login')
 
 
-def data_profile(request):
-    return HttpResponse("Данные профиля")
+class AddProfile(LoginRequiredMixin, CreateView):
+    form_class = AddProfileForm
+    template_name = 'backend/new_profile.html'
+    success_url = reverse_lazy('*********home')
+    login_url = reverse_lazy('***********home')
+    raise_exception = True
+    extra_context = {
+        'title': 'AddProfile'
+              }
+
+
+class ShowProfile(DetailView):
+    model = Profile
+    template_name = 'backend/profile.html'
+    allow_empty = False
+    extra_context = {
+        'title': 'Profile'
+              }
+
+    def get_queryset(self, prof_id):
+        return Profile.objects.get(pk=prof_id)
+    # def get_queryset(self, request, *args, **kwargs):
+    #     id = args[0] # or id = kwargs['id'] if it is passed as keyword argument
+    #     self.profile = get_object_or_404(Profile, id=pk, owner=request.user)
+    #     return super(ShowProfile, self).dispatch(request, pk)
+# def data_profile(request):
+#     return HttpResponse("Данные профиля")
 
 
 # def login(request):
